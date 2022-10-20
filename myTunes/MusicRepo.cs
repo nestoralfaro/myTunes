@@ -28,7 +28,10 @@ namespace myTunes
                 var items = from row in musicDataSet.Tables["playlist"].AsEnumerable()
                             orderby row["name"]
                             select row["name"].ToString();
-                return items.ToArray();
+                string[] results = new string[items.ToArray().Length + 1];
+                results[0] = "All Music";
+                Array.Copy(items.ToArray(), 0, results, 1, items.ToArray().Length);
+                return results;
             }
         }
 
