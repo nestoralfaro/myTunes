@@ -16,6 +16,6 @@
 |**Use of MusicRepo.** Program uses MusicRepo for the Model.| 5 |Both
 |**Rename and delete playlist.** Playlist renamed by choosing "Rename" from context menu and prompted for new name. Delete playlist by choosing "Delete" from context menu.| 5 |Anny
 |**Control template/styles for Play and Stop buttons.** Control template or styles with at least one trigger used to alter look and behavior of Play and Stop buttons. Buttons use Play and Stop commands, disabled when appropriate.| 5 |Anny
-|**Search for song.** User can enter search string that shows matches (partial match of title, artist, album, or genre) as string is entered.| 5 |Anny
+|**Search for song.** User can enter search string that shows matches (partial match of title, artist, album, or genre) as string is entered.| 5 |Nestor
 |**Git usage.** Repo includes .gitignore, good commit summaries, at least 20 commits, existing bugs posted as issues, both teammates making commits.| 5 |Both
 |**Coding practices.** Functions used where appropriate, good variable and function names, and other good programming practices employed.| 5 |Both
