@@ -5,22 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:myTunes"
         mc:Ignorable="d"
-        Title="MainWindow" Height="334" Width="652">
+        Title="A&amp;N myTunes" Height="334" Width="652">
     <Grid Margin="0,0,0,3">
-        <DataGrid x:Name="musicDataGrid" Margin="198,60,10,59"/>
+        <DataGrid x:Name="musicDataGrid" Margin="198,60,10,59" CanUserAddRows="False" IsReadOnly="False" SelectionMode="Single"/>
         <ListBox x:Name="playlistListBox" Margin="10,60,470,29"/>
-        <Button x:Name="playButton" Content="Play" HorizontalAlignment="Left" Margin="198,262,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14"/>
-        <Button x:Name="stopButton" Content="Stop" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14"/>
-        <DockPanel LastChildFill="False" Margin="0,3,0,257">
-            <ToolBarTray Width="652" Height="43">
-                <ToolBar HorizontalAlignment="Center" Height="48" VerticalAlignment="Center" Width="656">
-                    <Button x:Name="addSongButton" Content="Add Song" VerticalAlignment="Top" Height="39" Width="78"/>
-                    <Button x:Name="addPlaylistButton" Content="Add Playlist" VerticalAlignment="Top" Height="39" Width="78"/>
-                    <Button x:Name="aboutButton" Content="About" VerticalAlignment="Top" Height="39" Width="78"/>
-                    <TextBox x:Name="searchBar" TextWrapping="Wrap" Text="Search" VerticalAlignment="Center" Width="141" Height="37" HorizontalAlignment="Right"/>
-                </ToolBar>
-            </ToolBarTray>
-        </DockPanel>
+        <Button x:Name="playButton" Content="Play" Click="playButton_Click" HorizontalAlignment="Left" Margin="198,262,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14"/>
+        <Button x:Name="stopButton" Content="Stop" Click="stopButton_Click" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14"/>
+
+        <ToolBar HorizontalAlignment="Center" Height="48" VerticalAlignment="Top" Width="642" Margin="0,1,0,0">
+            <Button x:Name="addSongButton" Content="Add Song" Click="addSongButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
+            <Button x:Name="addPlaylistButton" Content="Add Playlist" Click="addPlaylistButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
+            <Button x:Name="aboutButton" Content="About" Click="aboutButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
+            <TextBox x:Name="searchBar" TextWrapping="Wrap" Text="Search" Width="140" Height="37" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        </ToolBar>
 
     </Grid>
 </Window>
