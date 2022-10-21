@@ -10,6 +10,7 @@ using System.Net;
 using System.IO;
 using System.Xml;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace myTunes
 {
@@ -233,7 +234,7 @@ namespace myTunes
         /// <returns>True if the playlist was successfully added</returns>
         public bool AddPlaylist(string playlist)
         {
-            Console.WriteLine("AddPlaylist: " + playlist);
+            Trace.WriteLine("AddPlaylist: " + playlist);
             DataTable table = musicDataSet.Tables["playlist"];
             DataRow row = table.NewRow();
             row["name"] = playlist;
