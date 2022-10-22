@@ -10,7 +10,6 @@ using System.Net;
 using System.IO;
 using System.Xml;
 using System.Threading.Tasks;
-using System.Diagnostics;
 
 namespace myTunes
 {
@@ -29,10 +28,7 @@ namespace myTunes
                 var items = from row in musicDataSet.Tables["playlist"].AsEnumerable()
                             orderby row["name"]
                             select row["name"].ToString();
-                string[] results = new string[items.ToArray().Length + 1];
-                results[0] = "All Music";
-                Array.Copy(items.ToArray(), 0, results, 1, items.ToArray().Length);
-                return results;
+                return items.ToArray();
             }
         }
 
@@ -42,7 +38,7 @@ namespace myTunes
             {
                 return musicDataSet.Tables["song"];
             }
-        }        
+        }
 
         public MusicRepo()
         {
@@ -82,7 +78,7 @@ namespace myTunes
         /// <param name="filename">MP3 filename</param>
         /// <returns>Song created from the MP3</returns>
         public Song AddSong(string filename)
-        {           
+        {
             // PM> Install-Package taglib
             // http://stackoverflow.com/questions/1750464/how-to-read-and-write-id3-tags-to-an-mp3-in-c
             TagLib.File file = TagLib.File.Create(filename);
@@ -109,14 +105,14 @@ namespace myTunes
         public Song GetSong(int songId)
         {
             DataTable table = musicDataSet.Tables["song"];
-            
+
             // Only one row should be selected
             foreach (DataRow row in table.Select("id=" + songId))
             {
                 Song song = new Song();
                 song.Id = songId;
                 song.Title = row["title"].ToString();
-                song.Artist = row["artist"].ToString(); 
+                song.Artist = row["artist"].ToString();
                 song.Album = row["album"].ToString();
                 song.Genre = row["genre"].ToString();
                 song.Length = row["length"].ToString();
@@ -188,7 +184,7 @@ namespace myTunes
 
             foreach (DataRow row in rows)
                 RemoveSongFromPlaylist(Convert.ToInt32(row["position"]),
-                        Convert.ToInt32(row["song_id"]), row["playlist_name"].ToString()); 
+                        Convert.ToInt32(row["song_id"]), row["playlist_name"].ToString());
 
             return true;
         }
@@ -234,7 +230,7 @@ namespace myTunes
         /// <returns>True if the playlist was successfully added</returns>
         public bool AddPlaylist(string playlist)
         {
-            Trace.WriteLine("AddPlaylist: " + playlist);
+            Console.WriteLine("AddPlaylist: " + playlist);
             DataTable table = musicDataSet.Tables["playlist"];
             DataRow row = table.NewRow();
             row["name"] = playlist;
@@ -268,7 +264,7 @@ namespace myTunes
             newPlaylistName = newPlaylistName.Trim();
             if (newPlaylistName == "" || oldPlaylistName == newPlaylistName)
                 return false;
-                            
+
             // Update playlist name in playlist and playlist_song tables
 
             DataTable table = musicDataSet.Tables["playlist"];
@@ -284,7 +280,7 @@ namespace myTunes
                     r["playlist_name"] = newPlaylistName;
 
             return true;
-        }              
+        }
 
         /// <summary>
         /// Returns true if the given playlist exists, false otherwise.
@@ -371,7 +367,7 @@ namespace myTunes
         /// <param name="playlist"></param>
         public void RemoveSongFromPlaylist(int position, int songId, string playlist)
         {
-            Console.WriteLine("RemoveSongFromPlaylist: id=" + songId + ", pos=" + position + 
+            Console.WriteLine("RemoveSongFromPlaylist: id=" + songId + ", pos=" + position +
                 ", playlist=" + playlist);
 
             // Search the primary key for this playlist and delete it from the playlist table
@@ -382,7 +378,7 @@ namespace myTunes
             primaryKeys.Add(songId);
             primaryKeys.Add(playlist);
             primaryKeys.Add(position);
-            table.Rows.Remove(table.Rows.Find(primaryKeys.ToArray()));  
+            table.Rows.Remove(table.Rows.Find(primaryKeys.ToArray()));
 
             // Decrement position by 1 for each song in this playlist that is positioned after
             // this one
@@ -415,13 +411,19 @@ namespace myTunes
 
             // Join on the song ID to create a single table
             var songs = from r1 in musicDataSet.Tables["playlist_song"].AsEnumerable()
-                       join r2 in musicDataSet.Tables["song"].AsEnumerable()
-                            on r1["song_id"] equals r2["id"] 
-                            where (string)r1["playlist_name"] == playlist
-                            orderby r1["position"]
-                       select new { Id = r2["id"], Position = r1["position"], Title = r2["title"],
-                        Artist = r2["artist"], Album = r2["album"], Genre = r2["genre"]
-                       };
+                        join r2 in musicDataSet.Tables["song"].AsEnumerable()
+                             on r1["song_id"] equals r2["id"]
+                        where (string)r1["playlist_name"] == playlist
+                        orderby r1["position"]
+                        select new
+                        {
+                            Id = r2["id"],
+                            Position = r1["position"],
+                            Title = r2["title"],
+                            Artist = r2["artist"],
+                            Album = r2["album"],
+                            Genre = r2["genre"]
+                        };
 
             Console.WriteLine("Songs for playlist " + playlist + ":");
             foreach (var s in songs)
@@ -438,7 +440,7 @@ namespace myTunes
             }
 
             return table;
-        }       
-    }    
+        }
+    }
 
 }

@@ -7,7 +7,58 @@
         mc:Ignorable="d"
         Title="A&amp;N myTunes" Height="334" Width="652">
     <Grid Margin="0,0,0,3">
-        <DataGrid x:Name="musicDataGrid" Margin="198,60,10,59" CanUserAddRows="False" IsReadOnly="False" SelectionMode="Single"/>
+        <DataGrid x:Name="musicDataGrid" Margin="198,60,10,59" AutoGenerateColumns="False" ItemsSource="{Binding}" CanUserAddRows="False" IsReadOnly="True" SelectionMode="Single">
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"/>
+                <DataGridTextColumn Binding="{Binding Title}" Header="Title"/>
+                <DataGridTextColumn Binding="{Binding Artist}" Header="Artist"/>
+                <DataGridTextColumn Binding="{Binding Album}" Header="Album"/>
+                <DataGridTextColumn Binding="{Binding Genre}" Header="Genre"/>
+            </DataGrid.Columns>
+
+            <DataGrid.RowDetailsTemplate>
+                <DataTemplate>
+                    <Border Background="AliceBlue">
+                        <StackPanel Orientation="Vertical">
+                            <WrapPanel Orientation="Horizontal">
+                                <Image Source="{Binding AlbumImageUrl}"/>
+                                <StackPanel Orientation="Vertical">
+                                    <WrapPanel Orientation="Horizontal">
+                                        <TextBlock Text="Title: "/>
+                                        <TextBlock Text="{Binding Title}"/>
+                                    </WrapPanel>
+                                    <WrapPanel Orientation="Horizontal">
+                                        <TextBlock Text="Artist: "/>
+                                        <TextBlock Text="{Binding Artist}"/>
+                                    </WrapPanel>
+                                    <WrapPanel Orientation="Horizontal">
+                                        <TextBlock Text="Length: "/>
+                                        <TextBlock Text="{Binding Length}"/>
+                                    </WrapPanel>
+                                    <TextBlock>
+                                        <TextBlock.Style>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding AboutUrl}" Value=" x:Null ">
+                                                        <Setter Property="Visibility" Value="Hidden"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+
+                                        <Hyperlink x:Name="moreInfoUrl" NavigateUri="{Binding AboutUrl}" RequestNavigate="moreInfoUrl_RequestNavigate">
+                                            More info
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </StackPanel>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Border>
+                </DataTemplate>
+            </DataGrid.RowDetailsTemplate>
+        </DataGrid>
         <ListBox x:Name="playlistListBox" Margin="10,60,470,29"/>
         <Button x:Name="playButton" Content="Play" Click="playButton_Click" HorizontalAlignment="Left" Margin="198,262,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14"/>
         <Button x:Name="stopButton" Content="Stop" Click="stopButton_Click" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14"/>
