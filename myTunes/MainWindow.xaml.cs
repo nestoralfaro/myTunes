@@ -25,7 +25,7 @@ namespace myTunes
     {
         private readonly MusicRepo musicRepo;
         private readonly ObservableCollection<string> playlists;
-        private readonly ObservableCollection<DataTable> songs;
+        private readonly ObservableCollection<Song> songs;
         public MainWindow()
         {
             InitializeComponent();
@@ -33,9 +33,6 @@ namespace myTunes
             try
             {
                 musicRepo = new MusicRepo();
-                // this will display the songs in a more staticky way (they will not update if there is a change)
-                // thus we need this into a ObservableCollection
-                musicDataGrid.ItemsSource = musicRepo?.Songs.DefaultView;
             }
             catch (Exception e)
             {
@@ -44,9 +41,26 @@ namespace myTunes
             }
 
             playlists = new ObservableCollection<string>(musicRepo?.Playlists);
+            playlists.Insert(0, "All Music");
             playlistListBox.ItemsSource = playlists;
-
-            // get musicRepo.Songs.DefaultView into a ObservableCollection
+            songs = new ObservableCollection<Song>();
+            foreach (DataRow row in musicRepo.Songs.AsEnumerable())
+            {
+                Trace.WriteLine(row["title"]);
+                songs.Add(new Song
+                {
+                    Id = (int)row["id"],
+                    Title = row["title"].ToString(),
+                    Artist = row["artist"].ToString(),
+                    Album = row["album"].ToString(),
+                    Genre = row["genre"].ToString(),
+                    Length = row["length"].ToString(),
+                    Filename = row["filename"].ToString(),
+                    AlbumImageUrl = row["albumImage"].ToString(),
+                    AboutUrl = row["url"].ToString()
+                });
+            }
+            musicDataGrid.ItemsSource = songs;
         }
 
         private void addPlaylistButton_Click(object sender, RoutedEventArgs e)
@@ -72,7 +86,28 @@ namespace myTunes
 
         private void addSongButton_Click(object sender, RoutedEventArgs e)
         {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                FileName = "",
+                DefaultExt = "*.wma;*.wav;*mp3;*.m4a",
+                Filter = "Media files|*.mp3;*.m4a;*.wma;*.wav|MP3 (*.mp3)|*.mp3|M4A (*.m4a)|*.m4a|Windows Media Audio (*.wma)|*.wma|Wave files (*.wav)|*.wav|All files|*.*"
+            };
 
+            bool? result = openFileDialog.ShowDialog();
+            if (result == true)
+            {
+                // Selected file is openFileDialog.FileName
+                Song newSong = musicRepo.AddSong(openFileDialog.FileName);
+
+                if (newSong != null)
+                {
+                    songs.Add(newSong);
+                    // Select the song just added 
+                    musicDataGrid.SelectedIndex = musicDataGrid.Items.Count - 1;
+                    // write to the file
+                    //musicRepo.Save();
+                } 
+            }
         }
 
         private void aboutButton_Click(object sender, RoutedEventArgs e)
@@ -85,6 +120,12 @@ namespace myTunes
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
+        }
+
+        private void moreInfoUrl_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            // Exclusively for .Net6?
+            Process.Start(new ProcessStartInfo { FileName=e.Uri.AbsoluteUri, UseShellExecute=true});
         }
     }
 }
