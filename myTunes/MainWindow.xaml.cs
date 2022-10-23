@@ -25,7 +25,9 @@ namespace myTunes
     {
         private readonly MusicRepo musicRepo;
         private readonly ObservableCollection<string> playlists;
-        private readonly ObservableCollection<Song> songs;
+        private ObservableCollection<Song> songs;
+        //private ObservableCollection<Song> songsOnGrid;
+        private Point startPoint;
         public MainWindow()
         {
             InitializeComponent();
@@ -44,10 +46,14 @@ namespace myTunes
             playlists = new ObservableCollection<string>(musicRepo?.Playlists);
             playlists.Insert(0, "All Music");
             playlistListBox.ItemsSource = playlists;
+            populateDataGridWithAllSongs();
+        }
+
+        private void populateDataGridWithAllSongs()
+        {
             songs = new ObservableCollection<Song>();
             foreach (DataRow row in musicRepo.Songs.AsEnumerable())
             {
-                Trace.WriteLine(row["title"]);
                 songs.Add(new Song
                 {
                     Id = (int)row["id"],
@@ -127,6 +133,45 @@ namespace myTunes
         {
             // Exclusively for .Net6?
             Process.Start(new ProcessStartInfo { FileName=e.Uri.AbsoluteUri, UseShellExecute=true});
+        }
+
+        private void playlistListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var playListName = playlistListBox.SelectedItem;
+            if (playListName != null && playListName != "All Music")
+            {
+                // filter all the songs by ID.
+                var songsInPlaylist = musicRepo.SongsForPlaylist((string)playListName).AsEnumerable();
+                musicDataGrid.ItemsSource = songs.Where(song => songsInPlaylist.Where(playlistSong => Int32.Parse((string)playlistSong["id"]) == song.Id).Count() > 0);
+            } else
+            {
+                populateDataGridWithAllSongs();
+            }
+        }
+
+        private void musicDataGrid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            startPoint = e.GetPosition(null);
+        }
+
+        private void musicDataGrid_MouseMove(object sender, MouseEventArgs e)
+        {
+            // Get the current mouse position
+            Point mousePos = e.GetPosition(null);
+            Vector diff = startPoint - mousePos;
+
+            // Start the drag-drop if mouse has moved far enough
+            if (e.LeftButton == MouseButtonState.Pressed &&
+                (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+            {
+                DragDrop.DoDragDrop(musicDataGrid, musicDataGrid.SelectedItem, DragDropEffects.Move);
+            }
+        }
+
+        private void playlistListBox_Drop(object sender, DragEventArgs e)
+        {
+            Trace.WriteLine("Drop!");
         }
     }
 }
