@@ -24,6 +24,7 @@ namespace myTunes
     public partial class MainWindow : Window
     {
         private readonly MusicRepo musicRepo;
+        private readonly MediaPlayer mediaPlayer;
         private readonly ObservableCollection<string> playlists;
         private ObservableCollection<Song> songs;
         //private ObservableCollection<Song> songsOnGrid;
@@ -31,7 +32,7 @@ namespace myTunes
         public MainWindow()
         {
             InitializeComponent();
-
+            mediaPlayer = new MediaPlayer();
             try
             {
                 musicRepo = new MusicRepo();
@@ -122,10 +123,20 @@ namespace myTunes
 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
+            Song? selectedSong = musicDataGrid.SelectedItem as Song;
+            if (selectedSong != null)
+            {
+                mediaPlayer.Open(new Uri(selectedSong.Filename));
+                mediaPlayer.Play();
+            }
         }
 
         private void stopButton_Click(object sender, RoutedEventArgs e)
         {
+            if (mediaPlayer != null)
+            {
+                mediaPlayer.Stop();
+            }
         }
 
         private void moreInfoUrl_RequestNavigate(object sender, RequestNavigateEventArgs e)
