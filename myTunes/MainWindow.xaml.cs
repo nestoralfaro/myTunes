@@ -170,7 +170,12 @@ namespace myTunes
 
         private void playlistListBox_Drop(object sender, DragEventArgs e)
         {
-            Trace.WriteLine("Drop!");
+            TextBlock textController = (TextBlock)e.OriginalSource;
+            Song song = (Song)e.Data.GetData("myTunes.Song");
+            int songId = song.Id;
+            string playlist = textController.Text;
+            musicRepo.AddSongToPlaylist(songId, playlist);
+            //musicRepo.Save();
         }
     }
-}
+} 
