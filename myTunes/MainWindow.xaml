@@ -78,10 +78,25 @@
         <Button x:Name="playButton" Content="Play" Click="playButton_Click" HorizontalAlignment="Left" Margin="198,262,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14"/>
         <Button x:Name="stopButton" Content="Stop" Click="stopButton_Click" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14"/>
 
-        <ToolBar HorizontalAlignment="Center" Height="48" VerticalAlignment="Top" Width="642" Margin="0,1,0,0">
-            <Button x:Name="addSongButton" Content="Add Song" Click="addSongButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
-            <Button x:Name="addPlaylistButton" Content="Add Playlist" Click="addPlaylistButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
-            <Button x:Name="aboutButton" Content="About" Click="aboutButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
+        <ToolBar HorizontalAlignment="Center" Height="54" VerticalAlignment="Top" Width="642" Margin="0,1,0,0">
+            <Button x:Name="addSongButton" Click="addSongButton_Click" VerticalAlignment="Top" Height="44" Width="78">
+                <Image Source="pictures/folder.png" Stretch="Uniform" Height="34" Width="40"></Image>
+            </Button>
+            <Button x:Name="addPlaylistButton" Click="addPlaylistButton_Click" VerticalAlignment="Top" Height="43" Width="83">
+                <Image Source="pictures/addsong.png" Stretch="Uniform" Height="44" Width="42"></Image>
+            </Button>
+            <Button x:Name="aboutButton" Click="aboutButton_Click" VerticalAlignment="Top" Height="46" Width="83">
+                <Image Source="pictures/aboui.png" Stretch="Uniform" Height="42" Width="39" RenderTransformOrigin="0.5,0.5">
+                    <Image.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform/>
+                            <RotateTransform Angle="-0.281"/>
+                            <TranslateTransform/>
+                        </TransformGroup>
+                    </Image.RenderTransform>
+                </Image>
+            </Button>
             <TextBox x:Name="searchBar" TextWrapping="Wrap" Text="Search" Width="140" Height="37" HorizontalAlignment="Right" VerticalAlignment="Center"/>
         </ToolBar>
 
