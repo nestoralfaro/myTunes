@@ -17,7 +17,13 @@
             SelectionMode="Single" PreviewMouseLeftButtonDown="musicDataGrid_PreviewMouseLeftButtonDown" MouseMove="musicDataGrid_MouseMove"
             
             >
-
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="playContextItem" Header="Play" Click="playButton_Click"/>
+                    <Separator/>
+                    <MenuItem x:Name="removeContextItem" Header="Remove" Click="removeContextItem_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"/>
                 <DataGridTextColumn Binding="{Binding Title}" Header="Title"/>
