@@ -44,9 +44,11 @@ namespace myTunes
                 Application.Current.Shutdown();
             }
 
-            playlists = new ObservableCollection<string>(musicRepo?.Playlists);
+            playlists = new ObservableCollection<string>(musicRepo?.Playlists!);
             playlists.Insert(0, "All Music");
             playlistListBox.ItemsSource = playlists;
+            // Select the All Music play list
+            playlistListBox.SelectedIndex = 0;
             populateDataGridWithAllSongs();
         }
 
@@ -58,14 +60,14 @@ namespace myTunes
                 songs.Add(new Song
                 {
                     Id = (int)row["id"],
-                    Title = row["title"].ToString(),
-                    Artist = row["artist"].ToString(),
-                    Album = row["album"].ToString(),
-                    Genre = row["genre"].ToString(),
-                    Length = row["length"].ToString(),
-                    Filename = row["filename"].ToString(),
-                    AlbumImageUrl = row["albumImage"].ToString(),
-                    AboutUrl = row["url"].ToString()
+                    Title = row["title"].ToString()!,
+                    Artist = row["artist"].ToString()!,
+                    Album = row["album"].ToString()!,
+                    Genre = row["genre"].ToString()!,
+                    Length = row["length"].ToString()!,
+                    Filename = row["filename"].ToString()!,
+                    AlbumImageUrl = row["albumImage"].ToString()!,
+                    AboutUrl = row["url"].ToString()!
                 });
             }
             musicDataGrid.ItemsSource = songs;
@@ -148,13 +150,14 @@ namespace myTunes
 
         private void playlistListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var playListName = playlistListBox.SelectedItem;
-            if (playListName != null && playListName != "All Music")
+            var currentSelectedPlaylist = playlistListBox.SelectedItem;
+            if (currentSelectedPlaylist is not null and not (object)"All Music")
             {
                 // filter all the songs by ID.
-                var songsInPlaylist = musicRepo.SongsForPlaylist((string)playListName).AsEnumerable();
+                var songsInPlaylist = musicRepo.SongsForPlaylist((string)currentSelectedPlaylist).AsEnumerable();
                 musicDataGrid.ItemsSource = songs.Where(song => songsInPlaylist.Where(playlistSong => Int32.Parse((string)playlistSong["id"]) == song.Id).Count() > 0);
-            } else
+            }
+            else
             {
                 populateDataGridWithAllSongs();
             }
@@ -188,6 +191,26 @@ namespace myTunes
             string playlist = textController.Text;
             musicRepo.AddSongToPlaylist(songId, playlist);
             //musicRepo.Save();
+        }
+
+        private void removeContextItem_Click(object sender, RoutedEventArgs e)
+        {
+            Trace.WriteLine("About to remove!");
+            var currentSelectedPlaylist = playlistListBox.SelectedItem;
+            if (currentSelectedPlaylist is not null and (object)"All Music")
+            {
+                Trace.WriteLine("What it was before");
+                musicRepo.PrintAllTables();
+                Song selectedSong = (Song)musicDataGrid.SelectedItem;
+                // Remove on the UI
+                songs.Remove(selectedSong);
+                // Remove from disk
+                Trace.WriteLine("What it is now");
+                musicRepo.DeleteSong(selectedSong.Id);
+                musicRepo.PrintAllTables();
+                // Write to disk
+                //musicRepo.Save();
+            }
         }
     }
 } 
