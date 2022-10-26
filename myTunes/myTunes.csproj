@@ -8,7 +8,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="icon.png" />
+    <None Remove="pictures\add.png" />
+    <None Remove="pictures\help.png" />
+    <None Remove="pictures\icon.png" />
+    <None Remove="pictures\information.png" />
+    <None Remove="pictures\music.png" />
+    <None Remove="pictures\open.png" />
+    <None Remove="pictures\playlist.png" />
+    <None Remove="pictures\task.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="TagLibSharp" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icon.png" />
+    <Resource Include="pictures\add.png" />
+    <Resource Include="pictures\help.png" />
+    <Resource Include="pictures\icon.png" />
+    <Resource Include="pictures\information.png" />
+    <Resource Include="pictures\music.png" />
+    <Resource Include="pictures\open.png" />
+    <Resource Include="pictures\playlist.png" />
+    <Resource Include="pictures\task.png" />
   </ItemGroup>
 
   <ItemGroup>

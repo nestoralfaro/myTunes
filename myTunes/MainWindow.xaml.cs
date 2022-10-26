@@ -122,6 +122,8 @@ namespace myTunes
 
         private void aboutButton_Click(object sender, RoutedEventArgs e)
         {
+            AboutWindow aboutWindow = new AboutWindow();
+            aboutWindow.ShowDialog();
         }
 
         private void playButton_Click(object sender, RoutedEventArgs e)

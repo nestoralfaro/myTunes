@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:myTunes"
         mc:Ignorable="d"
-        Title="A&amp;N myTunes" Height="334" Width="652">
+        Title="A&amp;N myTunes" Height="334" Width="652" Icon="/icon.png">
     <Grid Margin="0,0,0,3">
         <DataGrid
             x:Name="musicDataGrid"
@@ -79,9 +79,15 @@
         <Button x:Name="stopButton" Content="Stop" Click="stopButton_Click" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14"/>
 
         <ToolBar HorizontalAlignment="Center" Height="48" VerticalAlignment="Top" Width="642" Margin="0,1,0,0">
-            <Button x:Name="addSongButton" Content="Add Song" Click="addSongButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
-            <Button x:Name="addPlaylistButton" Content="Add Playlist" Click="addPlaylistButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
-            <Button x:Name="aboutButton" Content="About" Click="aboutButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
+            <Button x:Name="addSongButton" Click="addSongButton_Click" VerticalAlignment="Top" Height="39" Width="38">
+                <Image Source="pictures/open.png" />
+            </Button>
+            <Button x:Name="addPlaylistButton" Click="addPlaylistButton_Click" VerticalAlignment="Top" Height="39" Width="39">
+                <Image Source="pictures/task.png" />
+            </Button>
+            <Button x:Name="aboutButton"  Click="aboutButton_Click" VerticalAlignment="Top" Height="39" Width="42">
+                <Image Source="pictures/help.png" />
+            </Button>
             <TextBox x:Name="searchBar" TextWrapping="Wrap" Text="Search" Width="140" Height="37" HorizontalAlignment="Right" VerticalAlignment="Center"/>
         </ToolBar>
 
