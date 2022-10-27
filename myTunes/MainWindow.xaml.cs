@@ -148,8 +148,6 @@ namespace myTunes
             Process.Start(new ProcessStartInfo { FileName=e.Uri.AbsoluteUri, UseShellExecute=true});
         }
 
-        private Song getSong(int id) => songs.Where(song => song.Id == id).First();
-
         private void playlistListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var currentSelectedPlaylist = playlistListBox.SelectedItem;
@@ -157,11 +155,11 @@ namespace myTunes
             {
                 // filter all the songs by ID.
                 var songsInPlaylist = musicRepo.SongsForPlaylist((string)currentSelectedPlaylist).AsEnumerable();
-                var songsToDisplay = new ObservableCollection<Song>();
+                songs = new ObservableCollection<Song>();
                 foreach (var song in songsInPlaylist)
                 {
-                    Song curSong = getSong(Int32.Parse((string)song["id"]));
-                    songsToDisplay.Add(new Song
+                    Song curSong = musicRepo.GetSong(Int32.Parse((string)song["id"]));
+                    songs.Add(new Song
                     {
                         Id = curSong.Id,
                         Title = curSong.Title,
@@ -174,7 +172,7 @@ namespace myTunes
                         AboutUrl = curSong.AboutUrl,
                     });
                 }
-                musicDataGrid.ItemsSource = songsToDisplay;
+                musicDataGrid.ItemsSource = songs;
                 removeContextItem.Header = $"Remove from '{currentSelectedPlaylist}' Playlist";
             }
             else
@@ -234,31 +232,45 @@ namespace myTunes
             musicRepo.PrintAllTables();
             if (currentSelectedPlaylist is not null and not (object)"All Music")
             {
-                // turn this in a function as above!
+                // Remove the song from the selected playlist
                 var songInPlaylist = musicRepo.SongsForPlaylist((string)currentSelectedPlaylist)?.AsEnumerable().Where(s => Int32.Parse((string)s["id"]) == selectedSong.Id)?.FirstOrDefault();
                 if (songInPlaylist != null)
                 {
+                    // Remove song on playlist from disk
                     musicRepo.RemoveSongFromPlaylist(Int32.Parse((string)songInPlaylist["position"]), Int32.Parse((string)songInPlaylist["id"]), (string)currentSelectedPlaylist);
                 }
+                // Remove song from the UI
+                songs.RemoveAt(musicDataGrid.SelectedIndex);
             }
             else
             {
-                Debug.WriteLine("remove from everywhere");
+                // Remove from everywhere
                 foreach (string playlist in allPlaylists)
                 {
                     var songInPlaylist = musicRepo.SongsForPlaylist(playlist)?.AsEnumerable().Where(s => Int32.Parse((string)s["id"]) == selectedSong.Id)?.FirstOrDefault();
                     if (songInPlaylist != null)
                     {
+                        // Remove song on playlist from disk
                         musicRepo.RemoveSongFromPlaylist(Int32.Parse((string)songInPlaylist["position"]), Int32.Parse((string)songInPlaylist["id"]), playlist);
                     }
                 }
+                // Remove song from the main song table (on disk)
                 musicRepo.DeleteSong(selectedSong.Id);
+                // Remove song from the UI
+                songs.Remove(selectedSong);
             }
-            // TODO: remove the song from also the UI (perhaps through the DataGrid.Items or songs ObservableCollection)
-            Debug.WriteLine("What it is now");
             musicRepo.PrintAllTables();
             // Write to disk
             //musicRepo.Save();
+        }
+
+        private void Label_DragOver(object sender, DragEventArgs e)
+        {
+            Label? playlist = sender as Label;
+            if (playlist != null)
+            {
+                playlist.AllowDrop = (string)playlist.Content! != "All Music";
+            }
         }
     }
 } 

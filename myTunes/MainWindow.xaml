@@ -74,7 +74,13 @@
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
-        <ListBox x:Name="playlistListBox" Margin="10,60,470,29" SelectionChanged="playlistListBox_SelectionChanged" AllowDrop="True" Drop="playlistListBox_Drop"/>
+        <ListBox x:Name="playlistListBox" Margin="10,60,470,29" SelectionChanged="playlistListBox_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label x:Name="playlistLabel" Content="{Binding}" AllowDrop="True" DragOver="Label_DragOver" Drop="playlistListBox_Drop"></Label>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <Button x:Name="playButton" Content="Play" Click="playButton_Click" HorizontalAlignment="Left" Margin="198,262,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14"/>
         <Button x:Name="stopButton" Content="Stop" Click="stopButton_Click" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14"/>
 
