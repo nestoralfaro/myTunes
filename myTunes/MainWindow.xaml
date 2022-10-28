@@ -88,7 +88,31 @@
             <Button x:Name="addSongButton" Content="Add Song" Click="addSongButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
             <Button x:Name="addPlaylistButton" Content="Add Playlist" Click="addPlaylistButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
             <Button x:Name="aboutButton" Content="About" Click="aboutButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
-            <TextBox x:Name="searchBar" TextWrapping="Wrap" Text="Search" Width="140" Height="37" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <!--Implementation below from: https://stackoverflow.com/questions/7425618/how-can-i-add-a-hint-text-to-wpf-textbox-->
+            <TextBox x:Name="searchBar" TextWrapping="Wrap" Width="140" Height="37" HorizontalAlignment="Right" VerticalAlignment="Center" TextChanged="searchBar_TextChanged">
+                <TextBox.Style>
+                    <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                        <Style.Resources>
+                            <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                <VisualBrush.Visual>
+                                    <Label x:Name="searchLabel" Content="Search" Foreground="LightGray" />
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Style.Resources>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
         </ToolBar>
 
     </Grid>

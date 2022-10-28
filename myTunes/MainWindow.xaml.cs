@@ -272,5 +272,22 @@ namespace myTunes
                 playlist.AllowDrop = (string)playlist.Content! != "All Music";
             }
         }
+
+        private void searchBar_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            string query = searchBar.Text;
+            var currentSongs = new ObservableCollection<Song>(songs);
+            if (!string.IsNullOrEmpty(query))
+            {
+                musicDataGrid.ItemsSource = currentSongs.Where(song => song.Title.Contains(query)
+                                                                    || song.Artist.Contains(query)
+                                                                    || song.Genre.Contains(query)
+                                                                    ).ToList();
+            }
+            else
+            {
+                musicDataGrid.ItemsSource = currentSongs;
+            }
+        }
     }
 } 
