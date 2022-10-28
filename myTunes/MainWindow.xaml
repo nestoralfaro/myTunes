@@ -6,6 +6,9 @@
         xmlns:local="clr-namespace:myTunes"
         mc:Ignorable="d"
         Title="A&amp;N myTunes" Height="334" Width="652" Icon="/icon.png">
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static local:MainWindow.RenameCommand}" Executed="renamePlaylistContextItem_Click"/>
+    </Window.CommandBindings>
     <Grid Margin="0,0,0,3">
         <DataGrid
             x:Name="musicDataGrid"
@@ -75,6 +78,13 @@
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
         <ListBox x:Name="playlistListBox" Margin="10,60,470,29" SelectionChanged="playlistListBox_SelectionChanged">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem x:Name="renamePlaylistContextItem" Header="Rename" Click="renamePlaylistContextItem_Click" Command="{x:Static local:MainWindow.RenameCommand}"/>
+                    <Separator/>
+                    <MenuItem x:Name="removePlaylistContextItem" Header="Remove" Click="removePlaylistContextItem_Click"/>
+                </ContextMenu>
+            </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Label x:Name="playlistLabel" Content="{Binding}" AllowDrop="True" DragOver="Label_DragOver" Drop="playlistListBox_Drop"></Label>

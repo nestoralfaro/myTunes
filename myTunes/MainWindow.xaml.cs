@@ -27,8 +27,18 @@ namespace myTunes
         private readonly MediaPlayer mediaPlayer;
         private readonly ObservableCollection<string> playlists;
         private ObservableCollection<Song> songs;
-        //private ObservableCollection<Song> songsOnGrid;
         private Point startPoint;
+
+        // Custom commands for playlists
+        // source https://stackoverflow.com/questions/29814612/keyboard-shortcut-for-wpf-menu-item
+        public static readonly RoutedCommand RenameCommand = new RoutedUICommand("Options", "OptionsCommand", typeof(MainWindow), new InputGestureCollection(new InputGesture[]
+        {
+            new KeyGesture(Key.R, ModifierKeys.Control)
+        }));
+        public static readonly RoutedCommand DeleteCommand = new RoutedUICommand("Options", "OptionsCommand", typeof(MainWindow), new InputGestureCollection(new InputGesture[]
+        {
+            new KeyGesture(Key.Delete)
+        }));
         public MainWindow()
         {
             InitializeComponent();
@@ -78,13 +88,13 @@ namespace myTunes
             NewPlaylistWindow newPlaylistWindow = new NewPlaylistWindow();
             newPlaylistWindow.ShowDialog();
             string newPlaylistName = newPlaylistWindow.playlistTextBox.Text;
-            if (newPlaylistName != "")
+            if (!string.IsNullOrEmpty(newPlaylistName))
             {
-                if (musicRepo.AddPlaylist(newPlaylistWindow.playlistTextBox.Text))
+                if (musicRepo.AddPlaylist(newPlaylistName))
                 {
-                    // Enable for persist state
+                    // Enable for persisting state (writing to disk)
                     //musicRepo.Save();
-                    playlists.Add(newPlaylistWindow.playlistTextBox.Text);
+                    playlists.Add(newPlaylistName);
                 }
                 else
                 {
@@ -175,12 +185,16 @@ namespace myTunes
                     });
                 }
                 musicDataGrid.ItemsSource = songs;
-                removeContextItem.Header = $"Remove from '{currentSelectedPlaylist}' Playlist";
+                removeContextItem.Header = $"Remove from \"{currentSelectedPlaylist}\" Playlist";
+                removePlaylistContextItem.IsEnabled = true;
+                renamePlaylistContextItem.IsEnabled = true;
             }
             else
             {
                 populateDataGridWithAllSongs();
                 removeContextItem.Header = "Remove";
+                removePlaylistContextItem.IsEnabled = false;
+                renamePlaylistContextItem.IsEnabled = false;
             }
 
         }
@@ -215,23 +229,11 @@ namespace myTunes
             //musicRepo.Save();
         }
 
-        //private void removeSong (int position, int id, string playlist)
-        //{
-        //    var songInPlaylist = musicRepo.SongsForPlaylist(playlist)?.AsEnumerable().Where(s => Int32.Parse((string)s["id"]) == selectedSong.Id)?.FirstOrDefault();
-        //    if (songInPlaylist != null)
-        //    {
-        //        musicRepo.RemoveSongFromPlaylist(Int32.Parse((string)songInPlaylist["position"]), Int32.Parse((string)songInPlaylist["id"]), playlist);
-        //    }
-        //}
-
         private void removeContextItem_Click(object sender, RoutedEventArgs e)
         {
-            Trace.WriteLine("About to remove!");
             var currentSelectedPlaylist = playlistListBox.SelectedItem;
             var allPlaylists = musicRepo.Playlists;
-            Trace.WriteLine("What it was before");
             Song selectedSong = (Song)musicDataGrid.SelectedItem;
-            musicRepo.PrintAllTables();
             if (currentSelectedPlaylist is not null and not (object)"All Music")
             {
                 // Remove the song from the selected playlist
@@ -289,6 +291,46 @@ namespace myTunes
             else
             {
                 musicDataGrid.ItemsSource = currentSongs;
+            }
+        }
+
+        private void renamePlaylistContextItem_Click(object sender, RoutedEventArgs e)
+        {
+
+            RenamePlaylistWindow renamePlaylistWindow = new RenamePlaylistWindow();
+            renamePlaylistWindow.ShowDialog();
+            string newPlaylistName = renamePlaylistWindow.playlistTextBox.Text;
+            string? oldPlaylistName = playlistListBox.SelectedItem.ToString();
+            if (!string.IsNullOrEmpty(newPlaylistName) && !string.IsNullOrEmpty(oldPlaylistName))
+            {
+                if (musicRepo.PlaylistExists(oldPlaylistName))
+                {
+                    musicRepo.RenamePlaylist(oldPlaylistName, newPlaylistName);
+                    // Enable for persisting state (writing to disk)
+                    //musicRepo.Save();
+                    int oldPlaylistNameIndex = playlists.IndexOf(oldPlaylistName);
+                    playlists[oldPlaylistNameIndex] = newPlaylistName;
+                }
+                else
+                {
+                    //playlist does not exist
+                }
+
+            }
+        }
+
+        private void removePlaylistContextItem_Click(object sender, RoutedEventArgs e)
+        {
+            string? selectedPlaylist = playlistListBox.SelectedItem.ToString(); 
+            if(!string.IsNullOrEmpty(selectedPlaylist))
+            {
+                if (MessageBox.Show($"Are you sure you want to remove the playlist \"{playlistListBox.SelectedItem.ToString()}\"?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
+                {
+                    playlists.Remove(selectedPlaylist);
+                    musicRepo.DeletePlaylist(selectedPlaylist);
+                    // write to disk
+                    //musicRepo.Save();
+                }
             }
         }
     }
