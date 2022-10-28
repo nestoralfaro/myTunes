@@ -279,9 +279,9 @@ namespace myTunes
             var currentSongs = new ObservableCollection<Song>(songs);
             if (!string.IsNullOrEmpty(query))
             {
-                musicDataGrid.ItemsSource = currentSongs.Where(song => song.Title.Contains(query)
-                                                                    || song.Artist.Contains(query)
-                                                                    || song.Genre.Contains(query)
+                musicDataGrid.ItemsSource = currentSongs.Where(song => song.Title.ToLower().Contains(query.ToLower())
+                                                                    || song.Artist.ToLower().Contains(query.ToLower())
+                                                                    || song.Genre.ToLower().Contains(query.ToLower())
                                                                     ).ToList();
             }
             else
