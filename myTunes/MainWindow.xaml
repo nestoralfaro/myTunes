@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:myTunes"
         mc:Ignorable="d"
-        Title="A&amp;N myTunes" Height="334" Width="652">
+        Title="A&amp;N myTunes" Height="334" Width="652" Icon="/icon.png">
     <Grid Margin="0,0,0,3">
         <DataGrid
             x:Name="musicDataGrid"
@@ -74,30 +74,49 @@
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
-        <ListBox x:Name="playlistListBox" Margin="10,60,470,29" SelectionChanged="playlistListBox_SelectionChanged" AllowDrop="True" Drop="playlistListBox_Drop"/>
-        <Button x:Name="playButton" Content="Play" Click="playButton_Click" HorizontalAlignment="Left" Margin="198,262,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14"/>
-        <Button x:Name="stopButton" Content="Stop" Click="stopButton_Click" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14"/>
+        <ListBox x:Name="playlistListBox" Margin="10,60,470,29" SelectionChanged="playlistListBox_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label x:Name="playlistLabel" Content="{Binding}" AllowDrop="True" DragOver="Label_DragOver" Drop="playlistListBox_Drop"></Label>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
 
-        <ToolBar HorizontalAlignment="Center" Height="54" VerticalAlignment="Top" Width="642" Margin="0,1,0,0">
-            <Button x:Name="addSongButton" Click="addSongButton_Click" VerticalAlignment="Top" Height="44" Width="78">
-                <Image Source="pictures/folder.png" Stretch="Uniform" Height="34" Width="40"></Image>
+        <ToolBar HorizontalAlignment="Center" Height="48" VerticalAlignment="Top" Width="642" Margin="0,1,0,0">
+            <Button x:Name="addSongButton" Click="addSongButton_Click" ToolTip="Open" VerticalAlignment="Top" Height="39" Width="38">
+                <Image Source="pictures/open.png" />
             </Button>
-            <Button x:Name="addPlaylistButton" Click="addPlaylistButton_Click" VerticalAlignment="Top" Height="43" Width="83">
-                <Image Source="pictures/addsong.png" Stretch="Uniform" Height="44" Width="42"></Image>
+            <Button x:Name="addPlaylistButton" Click="addPlaylistButton_Click" ToolTip="New Playlist" VerticalAlignment="Top" Height="39" Width="39">
+                <Image Source="pictures/task.png" />
             </Button>
-            <Button x:Name="aboutButton" Click="aboutButton_Click" VerticalAlignment="Top" Height="46" Width="83">
-                <Image Source="pictures/aboui.png" Stretch="Uniform" Height="42" Width="39" RenderTransformOrigin="0.5,0.5">
-                    <Image.RenderTransform>
-                        <TransformGroup>
-                            <ScaleTransform/>
-                            <SkewTransform/>
-                            <RotateTransform Angle="-0.281"/>
-                            <TranslateTransform/>
-                        </TransformGroup>
-                    </Image.RenderTransform>
-                </Image>
+            <Button x:Name="aboutButton"  Click="aboutButton_Click" ToolTip="About" VerticalAlignment="Top" Height="39" Width="42">
+                <Image Source="pictures/help.png" />
             </Button>
-            <TextBox x:Name="searchBar" TextWrapping="Wrap" Text="Search" Width="140" Height="37" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+            <!--Implementation below from: https://stackoverflow.com/questions/7425618/how-can-i-add-a-hint-text-to-wpf-textbox-->
+            <TextBox x:Name="searchBar" TextWrapping="Wrap" Width="140" Height="37" HorizontalAlignment="Right" VerticalAlignment="Center" TextChanged="searchBar_TextChanged">
+                <TextBox.Style>
+                    <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                        <Style.Resources>
+                            <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                <VisualBrush.Visual>
+                                    <Label x:Name="searchLabel" Content="Search" Foreground="LightGray" />
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Style.Resources>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
         </ToolBar>
 
     </Grid>

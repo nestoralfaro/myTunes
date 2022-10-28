@@ -8,11 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="pictures\aboui.png" />
-    <None Remove="pictures\about.png" />
-    <None Remove="pictures\addsong.png" />
-    <None Remove="pictures\folder.png" />
+    <None Remove="icon.png" />
+    <None Remove="pictures\help.png" />
     <None Remove="pictures\icon.png" />
+    <None Remove="pictures\open.png" />
+    <None Remove="pictures\task.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,11 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="pictures\aboui.png" />
-    <Resource Include="pictures\about.png" />
-    <Resource Include="pictures\addsong.png" />
-    <Resource Include="pictures\folder.png" />
+    <Resource Include="icon.png" />
+    <Resource Include="pictures\help.png" />
     <Resource Include="pictures\icon.png" />
+    <Resource Include="pictures\open.png" />
+    <Resource Include="pictures\task.png" />
   </ItemGroup>
 
   <ItemGroup>
