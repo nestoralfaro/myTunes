@@ -10,6 +10,7 @@ using System.Net;
 using System.IO;
 using System.Xml;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace myTunes
 {
@@ -206,18 +207,18 @@ namespace myTunes
         {
             foreach (DataTable table in musicDataSet.Tables)
             {
-                Console.WriteLine("Table name = " + table.TableName);
+                Debug.WriteLine("Table name = " + table.TableName);
                 foreach (DataRow row in table.Rows)
                 {
-                    Console.WriteLine("Row:");
+                    Debug.WriteLine("Row:");
                     int i = 0;
                     foreach (Object item in row.ItemArray)
                     {
-                        Console.WriteLine(" " + table.Columns[i].Caption + "=" + item);
+                        Debug.WriteLine(" " + table.Columns[i].Caption + "=" + item);
                         i++;
                     }
                 }
-                Console.WriteLine();
+                Debug.WriteLine("");
             }
         }
 

@@ -74,11 +74,45 @@
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
-        <ListBox x:Name="playlistListBox" Margin="10,60,470,29" SelectionChanged="playlistListBox_SelectionChanged" AllowDrop="True" Drop="playlistListBox_Drop"/>
+        <ListBox x:Name="playlistListBox" Margin="10,60,470,29" SelectionChanged="playlistListBox_SelectionChanged">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Label x:Name="playlistLabel" Content="{Binding}" AllowDrop="True" DragOver="Label_DragOver" Drop="playlistListBox_Drop"></Label>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
         <Button x:Name="playButton" Content="Play" Click="playButton_Click" HorizontalAlignment="Left" Margin="198,262,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14"/>
         <Button x:Name="stopButton" Content="Stop" Click="stopButton_Click" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14"/>
 
         <ToolBar HorizontalAlignment="Center" Height="48" VerticalAlignment="Top" Width="642" Margin="0,1,0,0">
+            <Button x:Name="addSongButton" Content="Add Song" Click="addSongButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
+            <Button x:Name="addPlaylistButton" Content="Add Playlist" Click="addPlaylistButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
+            <Button x:Name="aboutButton" Content="About" Click="aboutButton_Click" VerticalAlignment="Top" Height="39" Width="78"/>
+            <!--Implementation below from: https://stackoverflow.com/questions/7425618/how-can-i-add-a-hint-text-to-wpf-textbox-->
+            <TextBox x:Name="searchBar" TextWrapping="Wrap" Width="140" Height="37" HorizontalAlignment="Right" VerticalAlignment="Center" TextChanged="searchBar_TextChanged">
+                <TextBox.Style>
+                    <Style TargetType="TextBox" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+                        <Style.Resources>
+                            <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
+                                <VisualBrush.Visual>
+                                    <Label x:Name="searchLabel" Content="Search" Foreground="LightGray" />
+                                </VisualBrush.Visual>
+                            </VisualBrush>
+                        </Style.Resources>
+                        <Style.Triggers>
+                            <Trigger Property="Text" Value="{x:Static sys:String.Empty}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}"/>
+                            </Trigger>
+                            <Trigger Property="Text" Value="{x:Null}">
+                                <Setter Property="Background" Value="{StaticResource CueBannerBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsKeyboardFocused" Value="True">
+                                <Setter Property="Background" Value="White"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
             <Button x:Name="addSongButton" Click="addSongButton_Click" ToolTip="Open" VerticalAlignment="Top" Height="39" Width="38">
                 <Image Source="pictures/open.png" />
             </Button>
