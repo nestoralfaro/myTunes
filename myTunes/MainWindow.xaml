@@ -5,20 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:myTunes"
         mc:Ignorable="d"
-        Title="A&amp;N myTunes" Height="334" Width="652" Icon="/icon.png">
+        Title="A&amp;N myTunes" Height="375" Width="610" Icon="/icon.png">
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static local:MainWindow.RenameCommand}" Executed="renamePlaylistContextItem_Click"/>
     </Window.CommandBindings>
-    <Grid Margin="0,0,0,3">
+    <Grid Margin="0,0,0,4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="233*"/>
+            <RowDefinition Height="34*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <DataGrid
             x:Name="musicDataGrid"
-            Margin="198,60,10,59"
+            Margin="10,0,0,2"
             AutoGenerateColumns="False"
             ItemsSource="{Binding}"
             CanUserAddRows="False"
             IsReadOnly="True"
             SelectionMode="Single" PreviewMouseLeftButtonDown="musicDataGrid_PreviewMouseLeftButtonDown" MouseMove="musicDataGrid_MouseMove"
-            
+            Grid.Row="1" Grid.Column="1" 
             >
             <DataGrid.ContextMenu>
                 <ContextMenu>
@@ -77,7 +86,7 @@
                 </DataTemplate>
             </DataGrid.RowDetailsTemplate>
         </DataGrid>
-        <ListBox x:Name="playlistListBox" Margin="10,60,470,29" SelectionChanged="playlistListBox_SelectionChanged">
+        <ListBox x:Name="playlistListBox" Margin="10,0,0,2" SelectionChanged="playlistListBox_SelectionChanged" Grid.Row="1" >
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem x:Name="renamePlaylistContextItem" Header="Rename" Click="renamePlaylistContextItem_Click" Command="{x:Static local:MainWindow.RenameCommand}"/>
@@ -92,10 +101,10 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button x:Name="playButton" Content="Play" Click="playButton_Click" HorizontalAlignment="Left" Margin="198,262,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14"/>
-        <Button x:Name="stopButton" Content="Stop" Click="stopButton_Click" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14"/>
+        <Button x:Name="playButton" Content="Play" Click="playButton_Click" HorizontalAlignment="Left" Margin="43,10,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14" Grid.Column="1" Grid.Row="2" RenderTransformOrigin="0.568,-1.628"/>
+        <Button x:Name="stopButton" Content="Stop" Click="stopButton_Click" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14" Grid.Column="1" Grid.Row="2"/>
 
-        <ToolBar HorizontalAlignment="Center" Height="48" VerticalAlignment="Top" Width="642" Margin="0,1,0,0">
+        <ToolBar Height="48" VerticalAlignment="Top" Grid.ColumnSpan="2"  >
             <Button x:Name="addSongButton" Click="addSongButton_Click" ToolTip="Open" VerticalAlignment="Top" Height="39" Width="38">
                 <Image Source="pictures/open.png" />
             </Button>
