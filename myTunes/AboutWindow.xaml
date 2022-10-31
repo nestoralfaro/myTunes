@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:myTunes"
         mc:Ignorable="d"
-        Title="About" Height="328" Width="480" ResizeMode="NoResize" Icon="/icon.png" WindowStartupLocation="CenterOwner">
+        Title="About" Height="291" Width="372" ResizeMode="NoResize" Icon="/icon.png" WindowStartupLocation="CenterOwner">
     <Grid Margin="0,0,0,-6">
-        <Label Content="A&amp;N myTunes" HorizontalAlignment="Center" Margin="0,40,0,0" VerticalAlignment="Top" FontFamily="Magneto" FontSize="36" Foreground="#FF4206E7"/>
-        <Label Content="Version 0.1" HorizontalAlignment="Center" Margin="0,125,0,0" VerticalAlignment="Top"/>
-        <Label Content="By Nestor Alfaro and Anny Cabrera" HorizontalAlignment="Center" Margin="0,169,0,0" VerticalAlignment="Top"/>
-        <Button Content="OK" HorizontalAlignment="Center" Margin="0,247,0,0" VerticalAlignment="Top" Width="80" Click="Button_Click"/>
+        <Label Content="A&amp;N myTunes" HorizontalAlignment="Left" Margin="37,22,0,0" VerticalAlignment="Top" FontFamily="Magneto" FontSize="36" Foreground="#FF4206E7"/>
+        <Label Content="Version 0.1" HorizontalAlignment="Left" Margin="148,100,0,0" VerticalAlignment="Top"/>
+        <Label Content="By Nestor Alfaro and Anny Cabrera" HorizontalAlignment="Left" Margin="84,141,0,0" VerticalAlignment="Top"/>
+        <Button Content="OK" HorizontalAlignment="Left" Margin="147,205,0,0" VerticalAlignment="Top" Width="80" Click="Button_Click"/>
 
     </Grid>
 </Window>

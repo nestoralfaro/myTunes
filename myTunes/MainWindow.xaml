@@ -8,6 +8,8 @@
         Title="A&amp;N myTunes" Height="375" Width="610" Icon="/icon.png">
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static local:MainWindow.RenameCommand}" Executed="renamePlaylistContextItem_Click"/>
+        <CommandBinding Command="{x:Static local:MainWindow.DeleteCommand}" Executed="removePlaylistContextItem_Click"/>
+
     </Window.CommandBindings>
     <Grid Margin="0,0,0,4">
         <Grid.RowDefinitions>
@@ -91,7 +93,7 @@
                 <ContextMenu>
                     <MenuItem x:Name="renamePlaylistContextItem" Header="Rename" Click="renamePlaylistContextItem_Click" Command="{x:Static local:MainWindow.RenameCommand}"/>
                     <Separator/>
-                    <MenuItem x:Name="removePlaylistContextItem" Header="Remove" Click="removePlaylistContextItem_Click"/>
+                    <MenuItem x:Name="removePlaylistContextItem" Header="Remove" Click="removePlaylistContextItem_Click" Command="{x:Static local:MainWindow.DeleteCommand}"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
