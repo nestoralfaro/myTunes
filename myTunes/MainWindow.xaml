@@ -12,7 +12,23 @@
         <CommandBinding Command="{x:Static local:MainWindow.PlayCommand}" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed"/>
         <CommandBinding Command="{x:Static local:MainWindow.StopCommand}" CanExecute="CommandBinding_CanExecute_1" Executed="CommandBinding_Executed_1"/>
     </Window.CommandBindings>
-   
+    <Window.Resources>
+        <ControlTemplate x:Key="PlayButtonTemplate" TargetType="Button">
+            <Border Name="Border" BorderThickness="2" CornerRadius="10" BorderBrush="BlueViolet">
+                <ContentPresenter Name="InnerText" HorizontalAlignment="Center"
+                VerticalAlignment="Center" TextBlock.Foreground="Firebrick" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="LightBlue" />
+                    <Setter TargetName="InnerText" Property="TextBlock.FontWeight" Value="Bold" />
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter TargetName="Border" Property="Background" Value="SkyBlue" />
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
     <Grid Margin="0,0,0,4">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -38,7 +54,7 @@
                 <ContextMenu>
                     <MenuItem x:Name="playContextItem" Header="Play" Command="{x:Static local:MainWindow.PlayCommand}"/>
                     <Separator/>
-                    <MenuItem x:Name="removeContextItem" Header="Remove" Command="{x:Static local:MainWindow.StopCommand}"/>
+                    <MenuItem x:Name="removeContextItem" Header="Remove" Click="removeContextItem_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
@@ -105,8 +121,8 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button x:Name="playButton" Content="Play" Command="{x:Static local:MainWindow.PlayCommand}" HorizontalAlignment="Left" Margin="198,262,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14" Grid.Column="1" Grid.Row="2" RenderTransformOrigin="0.568,-1.628"/>
-        <Button x:Name="stopButton" Content="Stop" Command="{x:Static local:MainWindow.StopCommand}" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14" Grid.Column="1" Grid.Row="2" />
+        <Button x:Name="playButton" Template="{StaticResource PlayButtonTemplate}" Content="Play" Command="{x:Static local:MainWindow.PlayCommand}" HorizontalAlignment="Left" Margin="198,5,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14" Grid.Column="1" Grid.Row="2" RenderTransformOrigin="0.568,-1.628"/>
+        <Button x:Name="stopButton" Template="{StaticResource PlayButtonTemplate}" Content="Stop" Command="{x:Static local:MainWindow.StopCommand}" HorizontalAlignment="Left" Margin="278,5,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14" Grid.Column="1" Grid.Row="2" />
         <ToolBar Height="48" VerticalAlignment="Top" Grid.ColumnSpan="2"  >
             <Button x:Name="addSongButton" Click="addSongButton_Click" ToolTip="Open" VerticalAlignment="Top" Height="39" Width="38">
                 <Image Source="pictures/open.png" />
@@ -142,7 +158,6 @@
                     </Style>
                 </TextBox.Style>
             </TextBox>
-            <Label x:Name="label1" Content="Label"/>
         </ToolBar>
 
     </Grid>

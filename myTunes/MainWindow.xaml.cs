@@ -42,20 +42,7 @@ namespace myTunes
         {
             new KeyGesture(Key.Delete)
         }));
-      //  public static readonly RoutedCommand PlayCommand = new RoutedUICommand("Options", "OptionsCommand", typeof(MainWindow));
-      //  public static readonly RoutedCommand StopCommand = new RoutedUICommand("Options", "OptionsCommand", typeof(MainWindow));
-
-
-
-        //public void PlayCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        //{
-        //    e.CanExecute = (musicDataGrid.SelectedIndex != -1);
-        //}
-
-        //public void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        //{
-        //    e.CanExecute = (mediaPlayer.CanPause != false);
-        //}
+      
         public static readonly RoutedUICommand PlayCommand = new RoutedUICommand("Play", "PlayCommand", typeof(MainWindow));
         public static readonly RoutedUICommand StopCommand = new RoutedUICommand("Stop", "StopCommand", typeof(MainWindow));
         public MainWindow()
@@ -112,7 +99,7 @@ namespace myTunes
                 if (musicRepo.AddPlaylist(newPlaylistName))
                 {
                     // Enable for persisting state (writing to disk)
-                    //musicRepo.Save();
+                    musicRepo.Save();
                     playlists.Add(newPlaylistName);
                 }
                 else
@@ -144,7 +131,7 @@ namespace myTunes
                     // Select the song just added 
                     musicDataGrid.SelectedIndex = musicDataGrid.Items.Count - 1;
                     // write to the file
-                    //musicRepo.Save();
+                    musicRepo.Save();
                 } 
             }
         }
@@ -227,7 +214,7 @@ namespace myTunes
             int songId = song.Id;
             string playlist = textController.Text;
             musicRepo.AddSongToPlaylist(songId, playlist);
-            //musicRepo.Save();
+            musicRepo.Save();
         }
 
         private void removeContextItem_Click(object sender, RoutedEventArgs e)
@@ -249,24 +236,32 @@ namespace myTunes
             }
             else
             {
-                // Remove from everywhere
-                foreach (string playlist in allPlaylists)
+                if (MessageBox.Show($"Are you sure you want to remove this song?", "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Information) == MessageBoxResult.Yes)
                 {
-                    var songInPlaylist = musicRepo.SongsForPlaylist(playlist)?.AsEnumerable().Where(s => Int32.Parse((string)s["id"]) == selectedSong.Id)?.FirstOrDefault();
-                    if (songInPlaylist != null)
+                    // Remove from everywhere
+                    foreach (string playlist in allPlaylists)
                     {
+                        var songInPlaylist = musicRepo.SongsForPlaylist(playlist)?.AsEnumerable().Where(s => Int32.Parse((string)s["id"]) == selectedSong.Id)?.FirstOrDefault();
+                        if (songInPlaylist != null)
+                        {
+
+                            musicRepo.RemoveSongFromPlaylist(Int32.Parse((string)songInPlaylist["position"]), Int32.Parse((string)songInPlaylist["id"]), playlist);
+                            // write to disk
+                             musicRepo.Save();
+                        }
                         // Remove song on playlist from disk
-                        musicRepo.RemoveSongFromPlaylist(Int32.Parse((string)songInPlaylist["position"]), Int32.Parse((string)songInPlaylist["id"]), playlist);
+
                     }
+
+                    // Remove song from the main song table (on disk)
+                    musicRepo.DeleteSong(selectedSong.Id);
+                    // Remove song from the UI
+                    songs.Remove(selectedSong);
                 }
-                // Remove song from the main song table (on disk)
-                musicRepo.DeleteSong(selectedSong.Id);
-                // Remove song from the UI
-                songs.Remove(selectedSong);
             }
             musicRepo.PrintAllTables();
             // Write to disk
-            //musicRepo.Save();
+            musicRepo.Save();
         }
 
         private void Label_DragOver(object sender, DragEventArgs e)
@@ -308,7 +303,7 @@ namespace myTunes
                 {
                     musicRepo.RenamePlaylist(oldPlaylistName, newPlaylistName);
                     // Enable for persisting state (writing to disk)
-                    //musicRepo.Save();
+                    musicRepo.Save();
                     int oldPlaylistNameIndex = playlists.IndexOf(oldPlaylistName);
                     playlists[oldPlaylistNameIndex] = newPlaylistName;
                 }
@@ -330,7 +325,7 @@ namespace myTunes
                     playlists.Remove(selectedPlaylist);
                     musicRepo.DeletePlaylist(selectedPlaylist);
                     // write to disk
-                    //musicRepo.Save();
+                    musicRepo.Save();
                 }
             }
         }
