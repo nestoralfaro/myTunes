@@ -8,6 +8,9 @@
         Title="A&amp;N myTunes" Height="334" Width="652" Icon="/icon.png">
     <Window.CommandBindings>
         <CommandBinding Command="{x:Static local:MainWindow.RenameCommand}" Executed="renamePlaylistContextItem_Click"/>
+        <CommandBinding Command="{x:Static local:MainWindow.RemoveCommand}" Executed="removePlaylistContextItem_Click"/>
+        <CommandBinding Command="{x:Static local:MainWindow.PlayCommand}" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed"/>
+        <CommandBinding Command="{x:Static local:MainWindow.StopCommand}" CanExecute="CommandBinding_CanExecute_1" Executed="CommandBinding_Executed_1"/>
     </Window.CommandBindings>
     <Grid Margin="0,0,0,3">
         <DataGrid
@@ -18,13 +21,13 @@
             CanUserAddRows="False"
             IsReadOnly="True"
             SelectionMode="Single" PreviewMouseLeftButtonDown="musicDataGrid_PreviewMouseLeftButtonDown" MouseMove="musicDataGrid_MouseMove"
-            
             >
+            
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem x:Name="playContextItem" Header="Play" Click="playButton_Click"/>
+                    <MenuItem x:Name="playContextItem" Header="Play" Command="{x:Static local:MainWindow.PlayCommand}"/>
                     <Separator/>
-                    <MenuItem x:Name="removeContextItem" Header="Remove" Click="removeContextItem_Click"/>
+                    <MenuItem x:Name="removeContextItem" Header="Remove" Command="{x:Static local:MainWindow.StopCommand}"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
             <DataGrid.Columns>
@@ -82,7 +85,7 @@
                 <ContextMenu>
                     <MenuItem x:Name="renamePlaylistContextItem" Header="Rename" Click="renamePlaylistContextItem_Click" Command="{x:Static local:MainWindow.RenameCommand}"/>
                     <Separator/>
-                    <MenuItem x:Name="removePlaylistContextItem" Header="Remove" Click="removePlaylistContextItem_Click"/>
+                    <MenuItem x:Name="removePlaylistContextItem" Header="Remove" Click="removePlaylistContextItem_Click" Command="{x:Static local:MainWindow.RemoveCommand}"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
@@ -92,8 +95,8 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button x:Name="playButton" Content="Play" Click="playButton_Click" HorizontalAlignment="Left" Margin="198,262,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14"/>
-        <Button x:Name="stopButton" Content="Stop" Click="stopButton_Click" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14"/>
+        <Button x:Name="playButton" Content="Play" Command="{x:Static local:MainWindow.PlayCommand}" HorizontalAlignment="Left" Margin="198,262,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14"/>
+        <Button x:Name="stopButton" Content="Stop" Command="{x:Static local:MainWindow.StopCommand}" HorizontalAlignment="Left" Margin="278,262,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14"/>
 
         <ToolBar HorizontalAlignment="Center" Height="48" VerticalAlignment="Top" Width="642" Margin="0,1,0,0">
             <Button x:Name="addSongButton" Click="addSongButton_Click" ToolTip="Open" VerticalAlignment="Top" Height="39" Width="38">

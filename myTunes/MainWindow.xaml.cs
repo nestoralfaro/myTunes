@@ -28,24 +28,26 @@ namespace myTunes
         private readonly ObservableCollection<string> playlists;
         private ObservableCollection<Song> songs;
         private Point startPoint;
+        private bool isPlaying;
 
         // Custom commands for playlists
         // source https://stackoverflow.com/questions/29814612/keyboard-shortcut-for-wpf-menu-item
-        public static readonly RoutedCommand RenameCommand = new RoutedUICommand("Options", "OptionsCommand", typeof(MainWindow), new InputGestureCollection(new InputGesture[]
+        public static readonly RoutedCommand RenameCommand = new RoutedUICommand("Rename", "RenameCommand", typeof(MainWindow), new InputGestureCollection(new InputGesture[]
         {
             new KeyGesture(Key.R, ModifierKeys.Control)
         }));
-        public static readonly RoutedCommand DeleteCommand = new RoutedUICommand("Options", "OptionsCommand", typeof(MainWindow), new InputGestureCollection(new InputGesture[]
+        public static readonly RoutedCommand RemoveCommand = new RoutedUICommand("Remove", "RemoveCommand", typeof(MainWindow), new InputGestureCollection(new InputGesture[]
         {
             new KeyGesture(Key.Delete)
         }));
+        public static readonly RoutedUICommand PlayCommand = new RoutedUICommand("Play", "PlayCommand", typeof(MainWindow));
+        public static readonly RoutedUICommand StopCommand = new RoutedUICommand("Stop", "StopCommand", typeof(MainWindow));
         public MainWindow()
         {
             InitializeComponent();
             mediaPlayer = new MediaPlayer();
             try
             {
-                //nuevo comment
                 musicRepo = new MusicRepo();
             }
             catch (Exception e)
@@ -60,6 +62,7 @@ namespace myTunes
             // Select the All Music play list
             playlistListBox.SelectedIndex = 0;
             populateDataGridWithAllSongs();
+            isPlaying = false; 
         }
 
         private void populateDataGridWithAllSongs()
@@ -136,24 +139,7 @@ namespace myTunes
             aboutWindow.ShowDialog();
         }
 
-        private void playButton_Click(object sender, RoutedEventArgs e)
-        {
-            Song? selectedSong = musicDataGrid.SelectedItem as Song;
-            if (selectedSong != null)
-            {
-                mediaPlayer.Open(new Uri(selectedSong.Filename));
-                mediaPlayer.Play();
-            }
-        }
-
-        private void stopButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (mediaPlayer != null)
-            {
-                mediaPlayer.Stop();
-            }
-        }
-
+        
         private void moreInfoUrl_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             // Exclusively for .Net6?
@@ -331,6 +317,36 @@ namespace myTunes
                     // write to disk
                     //musicRepo.Save();
                 }
+            }
+        }
+
+        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = musicDataGrid.SelectedItems.Count > 0 && !isPlaying;
+        }
+
+        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            Song? selectedSong = musicDataGrid.SelectedItem as Song;
+            if (selectedSong != null)
+            {
+                mediaPlayer.Open(new Uri(selectedSong.Filename));
+                mediaPlayer.Play();
+                isPlaying = true;
+            }
+        }
+
+        private void CommandBinding_CanExecute_1(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = isPlaying;
+        }
+
+        private void CommandBinding_Executed_1(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (mediaPlayer != null)
+            {
+                mediaPlayer.Stop();
+                isPlaying = false;
             }
         }
     }
