@@ -6,11 +6,15 @@
         xmlns:local="clr-namespace:myTunes"
         mc:Ignorable="d"
         Title="A&amp;N myTunes" Height="375" Width="610" Icon="/icon.png">
-    <Window.CommandBindings>
+    <!--<Window.CommandBindings>
         <CommandBinding Command="{x:Static local:MainWindow.RenameCommand}" Executed="renamePlaylistContextItem_Click"/>
         <CommandBinding Command="{x:Static local:MainWindow.DeleteCommand}" Executed="removePlaylistContextItem_Click"/>
+        <CommandBinding Command="Play" Executed="playButton_Click" />
+        <CommandBinding Command="Stop" Executed="stopButton_Click" />
+    </Window.CommandBindings>-->
+   
 
-    </Window.CommandBindings>
+
     <Grid Margin="0,0,0,4">
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
@@ -25,7 +29,7 @@
             x:Name="musicDataGrid"
             Margin="10,0,0,2"
             AutoGenerateColumns="False"
-            ItemsSource="{Binding}"
+            ItemsSource="{Binding}" SelectedItem="{Binding SelectedModelItem}"
             CanUserAddRows="False"
             IsReadOnly="True"
             SelectionMode="Single" PreviewMouseLeftButtonDown="musicDataGrid_PreviewMouseLeftButtonDown" MouseMove="musicDataGrid_MouseMove"
@@ -103,8 +107,8 @@
             </ListBox.ItemTemplate>
         </ListBox>
 
-        <Button x:Name="playButton" Content="Play" Click="playButton_Click" HorizontalAlignment="Left" Margin="43,10,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14" Grid.Column="1" Grid.Row="2" RenderTransformOrigin="0.568,-1.628"/>
-        <Button x:Name="stopButton" Content="Stop" Click="stopButton_Click" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14" Grid.Column="1" Grid.Row="2"/>
+        <Button x:Name="playButton" Content="Play"  HorizontalAlignment="Left" Margin="43,10,0,0" VerticalAlignment="Top" Height="25" Width="54" FontSize="14" Grid.Column="1" Grid.Row="2" RenderTransformOrigin="0.568,-1.628" IsEnabled="False" />
+        <Button x:Name="stopButton" Content="Stop"  HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Height="25" Width="66" FontSize="14" Grid.Column="1" Grid.Row="2" IsEnabled="False" />
 
         <ToolBar Height="48" VerticalAlignment="Top" Grid.ColumnSpan="2"  >
             <Button x:Name="addSongButton" Click="addSongButton_Click" ToolTip="Open" VerticalAlignment="Top" Height="39" Width="38">
@@ -141,6 +145,7 @@
                     </Style>
                 </TextBox.Style>
             </TextBox>
+            <Label x:Name="label1" Content="Label"/>
         </ToolBar>
 
     </Grid>

@@ -15,6 +15,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
+using TagLib;
+using System.ComponentModel;
 
 namespace myTunes
 {
@@ -39,6 +41,22 @@ namespace myTunes
         {
             new KeyGesture(Key.Delete)
         }));
+
+      //  public static readonly RoutedCommand PlayCommand = new RoutedUICommand("Options", "OptionsCommand", typeof(MainWindow));
+      //  public static readonly RoutedCommand StopCommand = new RoutedUICommand("Options", "OptionsCommand", typeof(MainWindow));
+
+
+
+        //public void PlayCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    e.CanExecute = (musicDataGrid.SelectedIndex != -1);
+        //}
+
+        //public void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    e.CanExecute = (mediaPlayer.CanPause != false);
+        //}
+
         public MainWindow()
         {
             InitializeComponent();
@@ -135,7 +153,7 @@ namespace myTunes
             AboutWindow aboutWindow = new AboutWindow();
             aboutWindow.ShowDialog();
         }
-
+ 
         private void playButton_Click(object sender, RoutedEventArgs e)
         {
             Song? selectedSong = musicDataGrid.SelectedItem as Song;
@@ -218,7 +236,7 @@ namespace myTunes
                 DragDrop.DoDragDrop(musicDataGrid, musicDataGrid.SelectedItem, DragDropEffects.Move);
             }
         }
-
+        
         private void playlistListBox_Drop(object sender, DragEventArgs e)
         {
             TextBlock textController = (TextBlock)e.OriginalSource;
@@ -333,5 +351,8 @@ namespace myTunes
                 }
             }
         }
+
+      
+
     }
 } 
