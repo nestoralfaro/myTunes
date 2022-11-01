@@ -1,7 +1,7 @@
 # myTunes
 
 ## 1. Brief summary of what the program does
-myTunes is a WPF music player where a user is able to add, remove, and play songs, as well as create, rename, and remove playlists from the player. The XML Schema Definition (music.xsd) and the Extensible Markup Language (music.xml) contain the data that the player will load and use as its model. Currently the supported formats are the following media files: mp3, m4a, wav, and wma.
+myTunes is a WPF music player where a user is able to add, remove, and play songs, as well as create, rename, and remove playlists from the player. The XML Schema Definition (music.xsd) and the Extensible Markup Language (music.xml) contain the data that the player will load and use as its model. Currently the supported formats are the following media files: `mp3, m4a, wav, and wma`.
 
 ## 2. An indication of whether you met all the requirements of the Procrastination Penalty on time
 Yes we did. We had a working DataGrid and ListBox displaying the appropriate data by the due date as required.
