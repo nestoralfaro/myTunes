@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -15,6 +15,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Collections.ObjectModel;
+using TagLib;
+using System.ComponentModel;
 
 namespace myTunes
 {
@@ -40,6 +42,20 @@ namespace myTunes
         {
             new KeyGesture(Key.Delete)
         }));
+      //  public static readonly RoutedCommand PlayCommand = new RoutedUICommand("Options", "OptionsCommand", typeof(MainWindow));
+      //  public static readonly RoutedCommand StopCommand = new RoutedUICommand("Options", "OptionsCommand", typeof(MainWindow));
+
+
+
+        //public void PlayCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    e.CanExecute = (musicDataGrid.SelectedIndex != -1);
+        //}
+
+        //public void StopCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        //{
+        //    e.CanExecute = (mediaPlayer.CanPause != false);
+        //}
         public static readonly RoutedUICommand PlayCommand = new RoutedUICommand("Play", "PlayCommand", typeof(MainWindow));
         public static readonly RoutedUICommand StopCommand = new RoutedUICommand("Stop", "StopCommand", typeof(MainWindow));
         public MainWindow()
@@ -138,7 +154,6 @@ namespace myTunes
             AboutWindow aboutWindow = new AboutWindow();
             aboutWindow.ShowDialog();
         }
-
         
         private void moreInfoUrl_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
@@ -204,7 +219,7 @@ namespace myTunes
                 DragDrop.DoDragDrop(musicDataGrid, musicDataGrid.SelectedItem, DragDropEffects.Move);
             }
         }
-
+        
         private void playlistListBox_Drop(object sender, DragEventArgs e)
         {
             TextBlock textController = (TextBlock)e.OriginalSource;

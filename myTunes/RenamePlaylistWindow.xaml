@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:myTunes"
         mc:Ignorable="d"
-        Title="RenamePlaylistWindow"  Height="153" Width="244">
+        Title="RenamePlaylistWindow"  Height="153" Width="244" Icon="/icon.png">
     <Grid Margin="0,0,10,-6">
         <Label Content="New name:" HorizontalAlignment="Left" Margin="10,26,0,0" VerticalAlignment="Top"/>
         <Button x:Name="OkNewPlaylistNameButton" Content="Ok" IsDefault="True" Click="OkNewPlaylistNameButton_Click" HorizontalAlignment="Left" Margin="68,86,0,0" VerticalAlignment="Top" Width="29"/>

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:myTunes"
         mc:Ignorable="d"
-        Title="New Playlist" Height="153" Width="244">
+        Title="New Playlist" Height="153" Width="244" Icon="/icon.png">
     <Grid Margin="0,0,10,-6">
         <Label Content="Playlist name:" HorizontalAlignment="Left" Margin="10,26,0,0" VerticalAlignment="Top"/>
         <Button x:Name="OkButton" Content="Ok" IsDefault="True" Click="OkButton_Click" HorizontalAlignment="Left" Margin="68,86,0,0" VerticalAlignment="Top" Width="29"/>
